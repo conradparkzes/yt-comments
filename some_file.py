@@ -3,7 +3,6 @@
 
 import googleapiclient.discovery
 import requests
-import json
 import pandas as pd
 import sqlalchemy as db
 
@@ -22,16 +21,12 @@ video_id = 'WEmcW59Hz6M'
 comments = comment_threads(video_id)
 
 i = 1 # iterative for id
-c = {}  # dict to be converted to df
+c = {} 
 
 for item in comments['items']:
-  # date edit for cleaner output
   date = item['snippet']['topLevelComment']['snippet']['publishedAt']
-  # dict storage
   c[i] = (item['snippet']['topLevelComment']['snippet']['authorDisplayName']),(item['snippet']['topLevelComment']['snippet']['textDisplay']),(item['snippet']['topLevelComment']['snippet']['likeCount']),(date[(date.find('2')):(date.find('T'))])
   i+=1
-
-# print(c)
 
 dataframe = pd.DataFrame.from_dict(c)
 
