@@ -1,7 +1,11 @@
+# pip install --upgrade google-api-python-client
+# use above for client import
+
 import googleapiclient.discovery
 import requests
-import pprint
 import json
+import pandas as pd
+import sqlalchemy as db
 
 def comment_threads(video_id):
   api_service_name = 'youtube'
@@ -9,26 +13,32 @@ def comment_threads(video_id):
   DEVELOPER_KEY = 'AIzaSyC7DYYMBkl50jZ-oiAlPZJ8W2Z3neOyTtU'
 
   youtube = googleapiclient.discovery.build(api_service_name, api_version, developerKey = DEVELOPER_KEY)
-  request = youtube.commentThreads().list(part='snippet',videoId=video_id,maxResults=10)#,order='relevance')
+  request = youtube.commentThreads().list(part='snippet',videoId=video_id,maxResults=10,order='relevance')
   response = request.execute()
 
   return response
 
 video_id = 'WEmcW59Hz6M'
 comments = comment_threads(video_id)
-# pprint.pprint(comments)
-# print(comments)
 
-# print(type(comments))
-# for comment in comments:
-  # print(type(comment))
-  # print(comment['items']['snippet']['topLevelComment']['snippet']['textDisplay'])
+i = 1 # iterative for id
+c = {}  # dict to be converted to df
 
-
-print('The most recent comments on the video, \"Mbappé is Good but... Messi & Ronaldo were Monsters at 19!\":')
-print()
-i = 1
 for item in comments['items']:
-  c = item['snippet']['topLevelComment']['snippet']['textDisplay']
-  print(f'{i}. {c}')
+  # date edit for cleaner output
+  date = item['snippet']['topLevelComment']['snippet']['publishedAt']
+  # dict storage
+  c[i] = (item['snippet']['topLevelComment']['snippet']['authorDisplayName']),(item['snippet']['topLevelComment']['snippet']['textDisplay']),(item['snippet']['topLevelComment']['snippet']['likeCount']),(date[(date.find('2')):(date.find('T'))])
   i+=1
+
+# print(c)
+
+dataframe = pd.DataFrame.from_dict(c)
+
+engine = db.create_engine('sqlite:///topcomments.db')
+
+dataframe.to_sql('topCommentsTable', con=engine, if_exists='replace',index=False)
+
+with engine.connect() as connection:
+   query_result = connection.execute(db.text("SELECT * FROM topCommentsTable;")).fetchall()
+   print(pd.DataFrame(query_result))
