@@ -1,4 +1,5 @@
 # yt-comments
+![workflow badge](https://github.com/conradparkzes/yt-comments/actions/workflows/style.yaml/badge.svg)
 ### Setup instructions
 * install libraries: googleapiclient with discovery module, requests, pandas, 
 sqlalchemy
