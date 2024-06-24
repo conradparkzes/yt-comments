@@ -7,9 +7,10 @@ sqlalchemy
 
 ### How to run the code (not accurate, but ideally)
 Running the program will ask you for a user input of the video ID of a YouTube
-video of your choice. This ID can be found at the end of a general url link 
-to your desired YouTube video. Input this ID, and returned will be 
-information about the top comments on the selected video.
+video of your choice. This ID can be found at the end of a general url link, 
+bounded by the "=" and "&" symbols to your desired YouTube video. Input 
+this ID, and returned will be information about the top comments on the 
+selected video.
 
  ### Code overview
 The code stores all available data from the CommentsThread tool of the 
