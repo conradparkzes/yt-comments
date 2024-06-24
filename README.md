@@ -5,7 +5,7 @@
 sqlalchemy
 * developer key for access to YouTube API is necessary
 
-### How to run the code (not accurate, but ideally)
+### How to run the code
 Running the program will ask you for a user input of the video ID of a YouTube
 video of your choice. This ID can be found at the end of a general url link, 
 bounded by the "=" and "&" symbols to your desired YouTube video. Input 
